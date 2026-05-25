@@ -1,14 +1,12 @@
 name: Health Check
 
 on:
-  # Запуск вручную с кнопки в GitHub
   workflow_dispatch:
-  # Запуск по расписанию — каждый день в 9:00 UTC
   schedule:
     - cron: '0 9 * * *'
 
 permissions:
-  contents: write  # нужно для деплоя на GitHub Pages
+  contents: write
 
 jobs:
   health-check:
@@ -23,20 +21,24 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install Newman and HTML reporter
+      - name: Install Newman and reporter
         run: |
           npm install -g newman
           npm install -g newman-reporter-htmlextra
 
       - name: Run Health Checks
         run: |
+          mkdir -p report
           newman run collections/health-checks.postman_collection.json \
-            --reporters htmlextra,cli \
-            --reporter-htmlextra-export report/index.html \
-            --reporter-htmlextra-title "QA Health Check Report" \
-            --reporter-htmlextra-browserTitle "Health Checks" \
-            --reporter-htmlextra-omitRequestBodies \
+            --reporters htmlextra,json,cli \
+            --reporter-htmlextra-export report/report.html \
+            --reporter-htmlextra-title "QA Health Check — Full Report" \
+            --reporter-htmlextra-darkTheme \
+            --reporter-json-export report/results.json \
             --suppress-exit-code
+
+      - name: Generate summary page
+        run: node generate-summary.js
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
