@@ -1,0 +1,46 @@
+name: Health Check
+
+on:
+  # Запуск вручную с кнопки в GitHub
+  workflow_dispatch:
+  # Запуск по расписанию — каждый день в 9:00 UTC
+  schedule:
+    - cron: '0 9 * * *'
+
+permissions:
+  contents: write  # нужно для деплоя на GitHub Pages
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Newman and HTML reporter
+        run: |
+          npm install -g newman
+          npm install -g newman-reporter-htmlextra
+
+      - name: Run Health Checks
+        run: |
+          newman run collections/health-checks.postman_collection.json \
+            --reporters htmlextra,cli \
+            --reporter-htmlextra-export report/index.html \
+            --reporter-htmlextra-title "QA Health Check Report" \
+            --reporter-htmlextra-browserTitle "Health Checks" \
+            --reporter-htmlextra-omitRequestBodies \
+            --suppress-exit-code
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./report
+          force_orphan: true
