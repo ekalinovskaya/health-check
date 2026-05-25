@@ -1,0 +1,51 @@
+{
+  "info": {
+    "_postman_id": "95f957d2-989c-4dc5-8be1-9091e72b9182",
+    "name": "Health Checks",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "46808199",
+    "_collection_link": "https://go.postman.co/collection/46808199-95f957d2-989c-4dc5-8be1-9091e72b9182?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "JSONPlaceholder - Posts",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "JSONPlaceholder - Users",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "JSONPlaceholder - Create Post",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "HTTPBin - GET",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "HTTPBin - POST",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    }
+  ]
+}
